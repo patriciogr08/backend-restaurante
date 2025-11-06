@@ -11,7 +11,7 @@ import {
 import { Factura } from './Factura';
 import { PedidoItem } from './PedidoItem';
 
-@Entity('facturaItem')
+@Entity('facturaitem')
 @Check(`cantidad > 0`)
 @Index(['facturaId', 'pedidoItemId']) // opcional: acelera búsquedas comunes
 export class FacturaItem {

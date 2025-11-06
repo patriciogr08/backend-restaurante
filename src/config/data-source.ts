@@ -4,6 +4,8 @@ import path from 'path';
 import { env } from './env';
 
 const isTs = __filename.endsWith('.ts');
+const root = process.cwd(); // proyecto
+
 
 export const AppDataSource = new DataSource({
     type: 'mysql',
@@ -16,8 +18,15 @@ export const AppDataSource = new DataSource({
     charset: 'utf8mb4',
     synchronize: false,
     logging: false,
-    entities: [path.join(__dirname, '..', 'domain', 'entities', isTs ? '*.ts' : '*.js')],
-    migrations: [path.join(__dirname, '..', 'migrations', isTs ? '*.ts' : '*.js')],
+    entities: [
+        path.join(root, 'src/domain/entities/*.{ts,js}'),
+        path.join(root, 'dist/domain/entities/*.js'),
+    ],
+    migrations: [
+        path.join(root, 'src/migrations/*.{ts,js}'),
+        path.join(root, 'dist/migrations/*.js'),
+    ],
+    migrationsTableName: 'migrations',
 });
 
 export async function initDataSource() {

@@ -6,7 +6,7 @@ import { Pedido } from './Pedido';
 import { Producto } from './Producto';
 import { FacturaItem } from './FacturaItem';
 
-@Entity('pedidoItem')
+@Entity('pedidoitem')
 @Check(`cantidad > 0`)
 @Check(`precioUnitario >= 0`) // ← nuevo
 @Check(`descuentoPorcentaje >= 0 AND descuentoPorcentaje <= 100`)

@@ -8,7 +8,7 @@ import {
     Check,
 } from 'typeorm';
 
-@Entity('configFiscal')
+@Entity('configfiscal')
 @Check(`ivaPercent >= 0 AND ivaPercent <= 100`)
 export class ConfigFiscal {
     @PrimaryGeneratedColumn()

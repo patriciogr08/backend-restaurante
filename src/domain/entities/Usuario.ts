@@ -33,6 +33,12 @@ export class Usuario {
     @Column({ type: 'enum', enum: ['ACTIVO', 'INACTIVO'], default: 'ACTIVO' })
     estado!: EstadoUsuario;
 
+    @Column({ type: 'varchar', length: 30, nullable: true })
+    telefono!: string | null;
+
+    @Column({ type: 'varchar', length: 255, nullable: true })
+    avatarUrl!: string | null;
+
     @CreateDateColumn({ type: 'datetime' })
     createdAt!: Date;
 

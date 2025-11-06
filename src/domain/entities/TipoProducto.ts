@@ -10,7 +10,7 @@ import {
 import { Producto } from './Producto';
 import type { EstadoCatalogo } from '../../types/domain';
 
-@Entity('tipoProducto')
+@Entity('tipoproducto')
 @Index(['estado']) // opcional: acelera listados por estado
 export class TipoProducto {
     @PrimaryGeneratedColumn()

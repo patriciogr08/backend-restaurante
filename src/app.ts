@@ -4,7 +4,6 @@ import cors from 'cors';
 import compression from 'compression';
 import path from 'path';
 import { env } from './config/env';
-import { router } from './routes';
 import { requestId } from './middlewares/requestId';
 import { httpLogger } from './middlewares/logger';
 import { rateLimiter } from './middlewares/rateLimiter';
@@ -12,6 +11,7 @@ import { timeZone } from './middlewares/timeZone';
 import { notFound } from './middlewares/notFound';
 import { errorHandler } from './middlewares/errorHandler';
 import { MOUNT_PATH, UPLOAD_DIR } from './config/multer';
+import apiRouter from './routes';
 
 export const app = express();
 
@@ -50,7 +50,7 @@ app.use(
 app.use(timeZone);
 
 // Rutas base (aún sin controladores de negocio)
-app.use('/api', router);
+app.use('/api', apiRouter);
 
 // 404 y errores
 app.use(notFound);

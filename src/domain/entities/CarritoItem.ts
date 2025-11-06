@@ -13,7 +13,7 @@ import {
 import { Carrito } from './Carrito';
 import { Producto } from './Producto';
 
-@Entity('carritoItem')
+@Entity('carritoitem')
 @Check(`cantidad > 0`)
 @Check(`descuentoPorcentaje >= 0 AND descuentoPorcentaje <= 100`)
 @Check(`descuentoValor >= 0`)
