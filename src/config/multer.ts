@@ -3,8 +3,9 @@ import fs from 'fs';
 import path from 'path';
 import { env } from './env';
 
-export const UPLOAD_DIR = env.UPLOAD_DIR;
-export const MOUNT_PATH = env.UPLOAD_MOUNT_PATH.replace(/\/+$/, '');
+
+export const UPLOAD_DIR = env.UPLOAD_DIR || 'public/images';
+export const MOUNT_PATH = env.UPLOAD_MOUNT_PATH.replace(/\/+$/, '')  || '/images';
 
 const BASE = path.join(process.cwd(), UPLOAD_DIR);
 fs.mkdirSync(BASE, { recursive: true });
@@ -26,12 +27,7 @@ export function uploaderFor(subdir = '') {
     });
 
     return multer({
-        storage,
-        limits: { fileSize: env.UPLOAD_MAX_MB * 1024 * 1024 },
-        fileFilter: (_req, file, cb) => {
-        const ok = /image\/(png|jpe?g|webp|gif)/i.test(file.mimetype);
-        cb(ok ? null as any : new Error('Tipo de archivo no permitido'));
-        }
+        storage
     });
 }
 

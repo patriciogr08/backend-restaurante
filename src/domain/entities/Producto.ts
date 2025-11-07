@@ -49,10 +49,10 @@ export class Producto {
     tieneDescuento!: boolean;
 
     @Column({ type: 'decimal', precision: 5, scale: 2, default: 0 })
-    descuentoPorcentaje!: string;
+    descuentoPorcentaje!: number;
 
     @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
-    descuentoValor!: string;
+    descuentoValor!: number;
 
     @CreateDateColumn({ type: 'datetime' })
     createdAt!: Date;

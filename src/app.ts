@@ -17,37 +17,30 @@ export const app = express();
 
 // IDs y logs
 app.use(requestId);
-app.use(httpLogger);
-
 // Seguridad / performance
-app.use(helmet());
-app.use(cors({ origin: true, credentials: true }));
+app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
+app.use(cors({
+  origin: true, 
+  credentials: true,
+  methods: ['GET','HEAD','PUT','PATCH','POST','DELETE','OPTIONS'],
+  allowedHeaders: ['authorization', 'content-type'],
+  preflightContinue: false
+}));
+app.use(httpLogger);
+app.use(timeZone);
 app.use(compression());
-
-// Rate limit
 app.use(rateLimiter);
 
-// Parsers
-app.use(express.json({ limit: '1mb' }));
-app.use(express.urlencoded({ extended: true }));
+// // Parsers
+app.use(express.json({ limit: '5mb' }));
 
-// Salud
-app.get('/health', (_req, res) => {
-  res.json({ ok: true, tz: env.DB_TIMEZONE, now: new Date().toISOString() });
-});
+    // Archivos estáticos (imágenes)
+const uploadDir: string = path.isAbsolute(process.env.UPLOAD_DIR ?? '')
+                        ? (process.env.UPLOAD_DIR as string)
+                        : path.join(__dirname, '..', process.env.UPLOAD_DIR ?? 'public/images');
 
-// Archivos estáticos (uploads)
-app.use(
-  env.UPLOAD_MOUNT_PATH.replace(/\/+$/, ''),
-  express.static(path.join(process.cwd(), env.UPLOAD_DIR), {
-    setHeaders: (res) => {
-      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
-    }
-  })
-);
-
-// Fijar TZ por request (opcional si ya lo ejecutas en init)
-app.use(timeZone);
+    // Sirve todo lo que esté dentro de UPLOAD_DIR en /images (o lo que definas en MOUNT_PATH)
+app.use(MOUNT_PATH, express.static(uploadDir));
 
 // Rutas base (aún sin controladores de negocio)
 app.use('/api', apiRouter);
