@@ -5,6 +5,7 @@ import usuariosRoutes from './admin-users.routes';
 import typeProductosRoutes from './admin-type-products.routes';
 import productosRoutes from './admin-products.routes';
 import configRoutes from './config.routes';
+import mesasRoutes from './mesas.routes';
 
 
 const apiRouter = Router();
@@ -17,6 +18,7 @@ apiRouter.use('/usuarios', usuariosRoutes);
 apiRouter.use('/usuarios', usuariosRoutes);
 apiRouter.use('/tipos-producto', typeProductosRoutes);
 apiRouter.use('/productos', productosRoutes);
+apiRouter.use('/mesas', mesasRoutes);
 
 export default apiRouter;
 

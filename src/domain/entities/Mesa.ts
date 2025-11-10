@@ -7,6 +7,7 @@ import {
     OneToMany,
     Index,
     Check,
+    DeleteDateColumn,
 } from 'typeorm';
 import { Carrito } from './Carrito';
 import { OcupacionMesa } from '../../types/domain';
@@ -37,4 +38,7 @@ export class Mesa {
 
     @OneToMany(() => Carrito, c => c.mesa)
     carritos!: Carrito[];
+
+    @DeleteDateColumn({ type: 'datetime', nullable: true })
+    deletedAt?: Date | null;
 }
