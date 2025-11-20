@@ -10,12 +10,12 @@ import {
 } from '../validation/admin-products.schemas';
 
 const r = Router();
-r.use(ensureAuth, requireRole('ADMIN'));
+r.use(ensureAuth);
 
 /* Productos */
 r.get('', listProductos);
-r.post('', validate(createProductoSchema), createProducto);
-r.patch('/:id', validate(updateProductoParams, 'params'), validate(updateProductoBody), updateProducto);
-r.patch('/:id/estado', validate(changeProductoEstadoParams, 'params'), validate(changeProductoEstadoBody), changeProductoEstado);
+r.post('',requireRole('ADMIN') ,validate(createProductoSchema), createProducto);
+r.patch('/:id', requireRole('ADMIN') ,validate(updateProductoParams, 'params'), validate(updateProductoBody), updateProducto);
+r.patch('/:id/estado', requireRole('ADMIN') ,validate(changeProductoEstadoParams, 'params'), validate(changeProductoEstadoBody), changeProductoEstado);
 
 export default r;

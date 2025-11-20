@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
 import { AppDataSource } from '../config/data-source';
 import { Usuario } from '../domain/entities/Usuario';
-import { Not } from "typeorm";
+import { Like, Not } from "typeorm";
 
 import bcrypt from 'bcryptjs';
 
@@ -64,4 +64,27 @@ export async function changeEstado(req: Request, res: Response) {
     u.estado = estado;
     await repo().save(u);
     res.json({ id:u.id, estado:u.estado });
+}
+
+export async function listUsuariosByRol(req: Request, res: Response) {
+    const rol = (req.query.rol as string) || 'MESERO';
+    const q   = (req.query.q as string | undefined)?.trim();
+    const where: any = { estado: 'ACTIVO' };
+    where.rol = rol;
+    
+    if (q) {
+        where.nombre = Like(`%${q}%`);
+    }
+
+    const rows = await repo().find({
+        where,
+        select: {
+        id: true,
+        nombre: true,
+        email: true,
+        },
+        order: { nombre: 'ASC' },
+    });
+
+    res.json(rows);
 }

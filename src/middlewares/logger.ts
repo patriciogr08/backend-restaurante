@@ -16,21 +16,19 @@ export const httpLogger = pinoHttp({
 
     // Solo serializa lo mínimo del request/response
     serializers: {
-        req(req) { return { id: req.requestId, method: req.method, url: req.url }; },
+        req(req) { return { method: req.method, url: req.url }; },
         res(res) { return { statusCode: res.statusCode }; },
     },
 
     // Campos extra concisos
     customProps: (req, res) => ({
-        requestId: (req as any).requestId,
         userId: req.user?.id,
         rol: req.user?.rol,
     }),
 
     // Mensajes cortos
-    customReceivedMessage: (req) => `start ${req.method} ${req.url}`,
-    customSuccessMessage:  (req, res) => `done ${req.method} ${req.url} ${res.statusCode}`,
-    customErrorMessage:    (req, res, err) => `fail ${req.method} ${req.url} ${res.statusCode} - ${err?.message}`,
+    customSuccessMessage:  (req, res) => `done ${req.url} ${res.statusCode}`,
+    customErrorMessage:    (req, res, err) => `fail ${req.url} ${res.statusCode} - ${err?.message}`,
 
     // Nivel según status
     customLogLevel: (req, res, err) => {

@@ -2,7 +2,7 @@ import type { Request, Response } from 'express';
 import { AppDataSource } from '../config/data-source';
 import { Producto } from '../domain/entities/Producto';
 import { TipoProducto } from '../domain/entities/TipoProducto';
-import { In } from 'typeorm';
+import { In, Like } from 'typeorm';
 import { aplicarDescuento, pvpDesdeBase } from '../utils/precios';
 import { getIvaVigentePercent } from '../services/fiscal.service';
 
@@ -52,22 +52,31 @@ export async function changeTipoEstado(req: Request, res: Response) {
 /* ===== Productos ===== */
 
 export async function listProductos(req: Request, res: Response) {
-    const { estado, tipo } = req.query as { estado?: 'ACTIVO'|'INACTIVO'; tipo?: string };
+    const { estado, tipo, q } = req.query as {
+        estado?: 'ACTIVO' | 'INACTIVO';
+        tipo?: string;
+        q?: string;
+    };
 
     const where: any = {};
     if (estado) where.estado = estado;
     if (tipo)   where.tipoProductoId = Number(tipo);
+    if (q && q.trim()) {
+        // Búsqueda parcial por nombre
+        where.nombre = Like(`%${q.trim()}%`);
+    }
 
     const rows = await prodRepo().find({
         where,
         relations: { tipoProducto: true },
         select: {
-        id:true, nombre:true, descripcion:true, precio:true, estado:true,
-        tieneDescuento:true, descuentoPorcentaje:true, descuentoValor:true,
-        tipoProducto: { id:true, nombre:true },
-        createdAt:true, updatedAt:true
+            id:true, nombre:true, descripcion:true, precio:true, estado:true,
+            tieneDescuento:true, descuentoPorcentaje:true, descuentoValor:true,
+            tipoProducto: { id:true, nombre:true },
+            createdAt:true, updatedAt:true
         },
-        order: { createdAt: 'DESC' }
+        order: { createdAt: 'DESC' },
+        take: 30, // opcional: limitar resultados
     });
 
     const iva = await getIvaVigentePercent();

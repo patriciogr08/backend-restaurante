@@ -37,8 +37,8 @@ export class Carrito {
     mesero!: Usuario;
 
     @Index()
-    @Column({ type: 'enum', enum: ['ACTIVO', 'CANCELADO'], default: 'ACTIVO' })
-    estado!: 'ACTIVO' | 'CANCELADO';
+    @Column({ type: 'enum', enum: ['ACTIVO', 'CONSUMIDO', 'CANCELADO'], default: 'ACTIVO' })
+    estado!: 'ACTIVO' | 'CONSUMIDO' | 'CANCELADO';
 
     @CreateDateColumn({ type: 'datetime' })
     createdAt!: Date;
