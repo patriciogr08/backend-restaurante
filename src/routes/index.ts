@@ -9,6 +9,8 @@ import mesasRoutes from './mesas.routes';
 import meseroRoutes from './mesero.routes';
 import despachoRoutes from './despacho.routes';
 import pedidosAdmin from './admin-pedidos.routes';
+import dashboardAdmin from './admin-dashboard.routes';
+import reportesdAdmin from './admin-reportes.routes';
 
 
 const apiRouter = Router();
@@ -25,6 +27,8 @@ apiRouter.use('/mesas', mesasRoutes);
 apiRouter.use('/mesero', meseroRoutes);
 apiRouter.use('/despachador', despachoRoutes);
 apiRouter.use('/admin', pedidosAdmin);
+apiRouter.use('/admin', dashboardAdmin);
+apiRouter.use('/admin/reportes', reportesdAdmin);
 
 export default apiRouter;
 
